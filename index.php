@@ -1,14 +1,31 @@
 <?php
 
 include("auth.php"); //include auth.php file on all secure pages 
+$uid = $_SESSION['Userid'];
+$uname = $_SESSION['username'];
 // Create database connection using config file
 include_once("db.php");
 
-$id = 
+//$id = 
 
 // Fetch all users data from database
 $result = mysqli_query($con, "SELECT * FROM product ORDER BY productid DESC");
 
+?>
+
+<?php
+    $result1 = mysqli_query($con, "SELECT * FROM users WHERE username='$uname'");
+    $count = mysqli_num_rows($result1);
+    if($count == 1){
+        $row = mysqli_fetch_assoc($result1);
+        $uid = $row['userid'];
+    
+        $_SESSION['Userid'] = $uid;
+    
+    }else{
+        echo "No username detected!!!";
+    }
+    
 ?>
 
 
@@ -16,7 +33,7 @@ $result = mysqli_query($con, "SELECT * FROM product ORDER BY productid DESC");
 <html>
 <head>
 <meta charset="utf-8">
-<title>Welcome Home</title>
+<title>Welcome To SACTECH MART | Home</title>
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -32,7 +49,7 @@ $result = mysqli_query($con, "SELECT * FROM product ORDER BY productid DESC");
     <p>
         <hr>
     </p> -->
-    <p>Welcome <?php echo $_SESSION['username']; ?>!</p>
+    <p>Welcome <?php echo $_SESSION['username'] . " | " ."User ID - ". $uid;?>!</p>
     <p><a href="dashboard.php">Dashboard</a></p>
     <a href="logout.php">Logout</a>
 </div>

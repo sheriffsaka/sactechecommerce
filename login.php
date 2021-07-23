@@ -25,7 +25,9 @@
 		$result = mysqli_query($con,$query) or die(mysql_error());
 		$rows = mysqli_num_rows($result);
         if($rows==1){
+			$uid = $rows['userid'];
 			$_SESSION['username'] = $username;
+			$_SESSION['Userid'] = $uid;
 			
 
 			header("Location: index.php"); // Redirect user to index.php

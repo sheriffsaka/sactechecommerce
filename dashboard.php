@@ -2,7 +2,9 @@
 
  
 require('db.php');
-include("auth.php"); //include auth.php file on all secure pages ?>
+include("auth.php"); //include auth.php file on all secure pages
+$uid = $_SESSION['Userid'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +15,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <body>
 <div class="form">
 <p>Dashboard</p>
-<p>Welcome to your dashboard.</p>
+<p>Welcome to your dashboard <?php echo $_SESSION['username']; ?>.</p>
 <p><a href="index.php">Home</a></p>
 <p><a href="additem.php">Add Item</a></p>
 <a href="logout.php">Logout</a>
@@ -24,12 +26,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 <table width='80%' border=1>
 
                 <tr>
-                    <th>Product Name</th> <th>Price</th> <th>Description</th> <th>Quantity</th><th>Date Added</th> <th>Update</th>
+                <th>User ID</th><th>Product Name</th> <th>Price</th> <th>Description</th> <th>Quantity</th><th>Date Added</th> <th>Update</th>
                 </tr>
                 <?php
-                $result = mysqli_query($con, "SELECT * FROM product ORDER BY productid DESC");
+                //$result = mysqli_query($con, "SELECT * FROM product ORDER BY productid WHERE userid='$uid' DESC");
+                //$result = mysqli_query($con, "SELECT * FROM product ORDER BY productid DESC"); 1
+                $result = mysqli_query($con, "SELECT * FROM product WHERE userid='$uid'"); //2
                 while($product_data = mysqli_fetch_array($result)) {
+                    //echo $product_data['userid'];
                     echo "<tr>";
+                    echo "<td>".$product_data['userid']."</td>";
                     echo "<td>".$product_data['product_name']."</td>";
                     echo "<td>".$product_data['price']."</td>";
                     echo "<td>".$product_data['pdescription']."</td>";

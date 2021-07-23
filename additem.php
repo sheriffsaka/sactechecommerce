@@ -5,6 +5,7 @@
 	// Check If form submitted, insert form data into users table.
 	if(isset($_POST['submit'])) {
 		$product_name = $_POST['product_name'];
+        $uid = $_SESSION['Userid'];
 		$price = $_POST['price'];
 		$description = $_POST['description'];
         $quantity = $_POST['quantity'];
@@ -14,7 +15,7 @@
 		include_once("db.php");
 
 		// Insert item data into table
-		$result = mysqli_query($con, "INSERT INTO product(product_name, price, pdescription, quantity, date_add) VALUES('$product_name','$price','$description','$quantity','$date_add')");
+		$result = mysqli_query($con, "INSERT INTO product(product_name, userid, price, pdescription, quantity, date_add) VALUES('$product_name','$uid','$price','$description','$quantity','$date_add')");
 
         if($result){
             echo "Item added successfully. <a href='dashboard.php'>View Products</a>";

@@ -1,13 +1,15 @@
 <?php
 // include database connection file
+session_start();
 include_once("db.php");
+
+
 
 // Check if form is submitted for product update, then redirect to homepage after update
 if(isset($_POST['update']))
 {
-	$id = $_POST['productid'];
-    $uid = $_POST['userid'];
-
+	$id = $_POST['id'];
+    $uid = $_SESSION['Userid'];
 	$product_name = $_POST['product_name'];
 	$price = $_POST['price'];
 	$description = $_POST['description'];
@@ -15,20 +17,36 @@ if(isset($_POST['update']))
     $date_add = date("Y-m-d H-i-s");
 
 	// update product data
-	$result = mysqli_query($con, "UPDATE product SET product_name='$product_name',price='$price',pdescription='$description' WHERE productid=$id");
-
-	// Redirect to homepage to display updated product in list
-	header("Location: dashboard.php");
+	$result = mysqli_query($con, "UPDATE product SET product_name='$product_name',price='$price',pdescription='$description', quantity = '$quantity'  WHERE productid=$id");
+    if($result){
+        echo "Product updated successfully!!!";
+        // Redirect to homepage to display updated product in list
+	    header("Location: dashboard.php");
+    }else{
+        echo "Try again, something went wrong.";
+    }
+	
 }
 ?>
+<?php
+    if(isset($_POST['edit'])){
+
+    }
+
+?>
+
+
+
 <?php
 // Display selected product data based on id
 // Getting id from url
 $id = $_GET['id'];
-$uid = $_GET['uid'];
+$uid = $_SESSION['Userid'];
 
-// Fetech product data based on id
+// Fetch product data based on id
 $result = mysqli_query($con, "SELECT * FROM product WHERE productid=$id and userid=$uid");
+// $result = mysqli_query($con, "SELECT * FROM product WHERE productid=$id");
+//$result = mysqli_query($con, "SELECT * FROM product WHERE userid=$uid");
 
 while($product_data = mysqli_fetch_array($result))
 {
